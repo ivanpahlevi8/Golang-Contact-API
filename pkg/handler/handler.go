@@ -35,10 +35,12 @@ func (m *Handler) AddData(w http.ResponseWriter, r *http.Request) {
 			TimeStamp:    t,
 		}
 		json.NewEncoder(w).Encode(errRespone)
+		w.WriteHeader(404)
 		log.Println("Error Adding Data")
 	} else {
 		json.NewEncoder(w).Encode(data)
 		log.Println("Success Adding Data")
+		w.WriteHeader(201)
 	}
 }
 

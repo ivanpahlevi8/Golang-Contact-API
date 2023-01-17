@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"log"
 	"myapi/pkg/model"
 	"myapi/pkg/repository"
 )
@@ -21,11 +22,13 @@ func (m *Service) AddData(data model.Account) (model.Account, error) {
 	// check input data
 	errorCheck := false
 
-	if data.GetPassword() == "" || data.GetPassword() == " " || data.GetPassword() == "  " || data.GetPassword() == "   " || data.GetPassword() == "    " || data.GetPassword() == "     " {
+	if data.GetUsername() == "" || data.GetUsername() == " " || data.GetUsername() == "  " || data.GetUsername() == "   " || data.GetUsername() == "    " || data.GetUsername() == "     " {
 		errorCheck = true
 	} else if data.GetPassword() == "" || data.GetPassword() == " " || data.GetPassword() == "  " || data.GetPassword() == "   " || data.GetPassword() == "    " || data.GetPassword() == "     " {
 		errorCheck = true
 	}
+
+	log.Println("Input pass :", data.GetPassword())
 
 	if errorCheck {
 		return data, errors.New("Invalid Input Error")
