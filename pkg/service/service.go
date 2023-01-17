@@ -17,8 +17,22 @@ func InitService(repo repository.Repository) Service {
 	return myService
 }
 
-func (m *Service) AddData(data model.Account) {
-	m.repo.AddData(data)
+func (m *Service) AddData(data model.Account) (model.Account, error) {
+	// check input data
+	errorCheck := false
+
+	if data.GetPassword() == "" || data.GetPassword() == " " || data.GetPassword() == "  " || data.GetPassword() == "   " || data.GetPassword() == "    " || data.GetPassword() == "     " {
+		errorCheck = true
+	} else if data.GetPassword() == "" || data.GetPassword() == " " || data.GetPassword() == "  " || data.GetPassword() == "   " || data.GetPassword() == "    " || data.GetPassword() == "     " {
+		errorCheck = true
+	}
+
+	if errorCheck {
+		return data, errors.New("Invalid Input Error")
+	} else {
+		m.repo.AddData(data)
+		return data, nil
+	}
 }
 
 func (m *Service) GetDataByUsername(username string) (model.Account, error) {

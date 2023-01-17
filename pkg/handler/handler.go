@@ -26,9 +26,20 @@ func (m *Handler) AddData(w http.ResponseWriter, r *http.Request) {
 
 	_ = json.NewDecoder(r.Body).Decode(&account)
 
-	m.myService.AddData(account)
+	data, err := m.myService.AddData(account)
 
-	log.Println("Success Adding Data")
+	if err != nil {
+		t := time.Now().Format("2006-01-02 15:04:05")
+		errRespone := model.Error{
+			ErrorMessage: err.Error(),
+			TimeStamp:    t,
+		}
+		json.NewEncoder(w).Encode(errRespone)
+		log.Println("Error Adding Data")
+	} else {
+		json.NewEncoder(w).Encode(data)
+		log.Println("Success Adding Data")
+	}
 }
 
 func (m *Handler) GetDataByUsername(w http.ResponseWriter, r *http.Request) {
