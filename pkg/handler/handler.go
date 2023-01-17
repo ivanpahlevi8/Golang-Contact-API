@@ -6,6 +6,7 @@ import (
 	"myapi/pkg/model"
 	"myapi/pkg/service"
 	"net/http"
+	"time"
 )
 
 var MyHandler Handler
@@ -37,11 +38,20 @@ func (m *Handler) GetDataByUsername(w http.ResponseWriter, r *http.Request) {
 
 	getUsername := params.Get("username")
 
-	getAccount := m.myService.GetDataByUsername(getUsername)
+	getAccount, err := m.myService.GetDataByUsername(getUsername)
 
-	json.NewEncoder(w).Encode(getAccount)
-
-	log.Println("Success get Data By Username")
+	if err != nil {
+		t := time.Now()
+		errRespone := model.Error{
+			ErrorMessage: err.Error(),
+			TimeStamp:    t.String(),
+		}
+		json.NewEncoder(w).Encode(errRespone)
+		log.Println("Error get data by username")
+	} else {
+		json.NewEncoder(w).Encode(getAccount)
+		log.Println("Success get Data By Username")
+	}
 }
 
 func (m *Handler) GetDataByPassword(w http.ResponseWriter, r *http.Request) {
@@ -51,11 +61,20 @@ func (m *Handler) GetDataByPassword(w http.ResponseWriter, r *http.Request) {
 
 	getPassword := params.Get("password")
 
-	getAccount := m.myService.GetDataByPassword(getPassword)
+	getAccount, err := m.myService.GetDataByPassword(getPassword)
 
-	json.NewEncoder(w).Encode(getAccount)
-
-	log.Println("Success get Data By Username")
+	if err != nil {
+		t := time.Now()
+		errRespone := model.Error{
+			ErrorMessage: err.Error(),
+			TimeStamp:    t.String(),
+		}
+		json.NewEncoder(w).Encode(errRespone)
+		log.Println("Error get data by password")
+	} else {
+		json.NewEncoder(w).Encode(getAccount)
+		log.Println("Success get Data By password")
+	}
 }
 
 func (m *Handler) UpdateDataByUsername(w http.ResponseWriter, r *http.Request) {
@@ -67,11 +86,20 @@ func (m *Handler) UpdateDataByUsername(w http.ResponseWriter, r *http.Request) {
 	params := r.URL.Query()
 	getUsername := params.Get("username")
 
-	getAccount := m.myService.UpdateDataByUsername(getUsername, account)
+	getAccount, err := m.myService.UpdateDataByUsername(getUsername, account)
 
-	json.NewEncoder(w).Encode(getAccount)
-
-	log.Println("Success update data by username")
+	if err != nil {
+		t := time.Now()
+		errRespone := model.Error{
+			ErrorMessage: err.Error(),
+			TimeStamp:    t.String(),
+		}
+		json.NewEncoder(w).Encode(errRespone)
+		log.Println("Error update data by username")
+	} else {
+		json.NewEncoder(w).Encode(getAccount)
+		log.Println("Success update data by username")
+	}
 }
 
 func (m *Handler) UpdateDataByPassword(w http.ResponseWriter, r *http.Request) {
@@ -83,11 +111,20 @@ func (m *Handler) UpdateDataByPassword(w http.ResponseWriter, r *http.Request) {
 	params := r.URL.Query()
 	getPassword := params.Get("password")
 
-	getAccount := m.myService.UpdateDataByPassword(getPassword, account)
+	getAccount, err := m.myService.UpdateDataByPassword(getPassword, account)
 
-	json.NewEncoder(w).Encode(getAccount)
-
-	log.Println("Success update data by password")
+	if err != nil {
+		t := time.Now()
+		errRespone := model.Error{
+			ErrorMessage: err.Error(),
+			TimeStamp:    t.String(),
+		}
+		json.NewEncoder(w).Encode(errRespone)
+		log.Println("Error update data by password")
+	} else {
+		json.NewEncoder(w).Encode(getAccount)
+		log.Println("Success update data by password")
+	}
 }
 
 func (m *Handler) DeleteDataByUsername(w http.ResponseWriter, r *http.Request) {
@@ -96,11 +133,20 @@ func (m *Handler) DeleteDataByUsername(w http.ResponseWriter, r *http.Request) {
 	params := r.URL.Query()
 	getUsername := params.Get("username")
 
-	getAccount := m.myService.DeleteDataByUsername(getUsername)
+	getAccount, err := m.myService.DeleteDataByUsername(getUsername)
 
-	json.NewEncoder(w).Encode(getAccount)
-
-	log.Println("Success Delete Data By Username")
+	if err != nil {
+		t := time.Now()
+		errRespone := model.Error{
+			ErrorMessage: err.Error(),
+			TimeStamp:    t.String(),
+		}
+		json.NewEncoder(w).Encode(errRespone)
+		log.Println("Error delete data by username")
+	} else {
+		json.NewEncoder(w).Encode(getAccount)
+		log.Println("Success delete data by username")
+	}
 }
 
 func (m *Handler) DeleteDataByPassword(w http.ResponseWriter, r *http.Request) {
@@ -109,9 +155,19 @@ func (m *Handler) DeleteDataByPassword(w http.ResponseWriter, r *http.Request) {
 	params := r.URL.Query()
 	getPassword := params.Get("password")
 
-	getAccount := m.myService.DeleteDataByPassword(getPassword)
+	getAccount, err := m.myService.DeleteDataByPassword(getPassword)
 
-	json.NewEncoder(w).Encode(getAccount)
+	if err != nil {
+		t := time.Now()
+		errRespone := model.Error{
+			ErrorMessage: err.Error(),
+			TimeStamp:    t.String(),
+		}
+		json.NewEncoder(w).Encode(errRespone)
+		log.Println("Error delete data by password")
+	} else {
+		json.NewEncoder(w).Encode(getAccount)
+		log.Println("Success delete data by password")
+	}
 
-	log.Println("Success Delete Data By Password")
 }

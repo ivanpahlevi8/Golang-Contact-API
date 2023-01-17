@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"myapi/pkg/model"
 	"myapi/pkg/repository"
 )
@@ -20,34 +21,45 @@ func (m *Service) AddData(data model.Account) {
 	m.repo.AddData(data)
 }
 
-func (m *Service) GetDataByUsername(username string) model.Account {
+func (m *Service) GetDataByUsername(username string) (model.Account, error) {
 	var allData = m.repo.GetAllData()
 	var getData model.Account
+	i := 0
 	for _, data := range allData {
 		if data.GetUsername() == username {
 			getData = data
 			break
 		}
+		i++
 	}
 
-	return getData
+	if i == len(allData) {
+		return getData, errors.New("Username not found")
+	} else {
+		return getData, nil
+	}
 }
 
-func (m *Service) GetDataByPassword(password string) model.Account {
+func (m *Service) GetDataByPassword(password string) (model.Account, error) {
 	var allData = m.repo.GetAllData()
 	var getData model.Account
-
+	i := 0
 	for _, data := range allData {
 		if data.GetPassword() == password {
 			getData = data
 			break
 		}
+		i++
 	}
 
-	return getData
+	if i == len(allData) {
+		return getData, errors.New("Password Not Found")
+	} else {
+		return getData, nil
+	}
 }
 
-func (m *Service) UpdateDataByUsername(username string, data model.Account) model.Account {
+func (m *Service) UpdateDataByUsername(username string, data model.Account) (model.Account, error) {
 	var allData = m.repo.GetAllData()
 	var i = 0
 
@@ -58,12 +70,16 @@ func (m *Service) UpdateDataByUsername(username string, data model.Account) mode
 		i++
 	}
 
-	m.repo.UpdateData(i, data)
+	if i == len(allData) {
+		m.repo.UpdateData(i, data)
+		return myService.repo.GetData(i), nil
+	} else {
+		return model.Account{}, errors.New("Cannot Update By Username")
+	}
 
-	return myService.repo.GetData(i)
 }
 
-func (m *Service) UpdateDataByPassword(password string, data model.Account) model.Account {
+func (m *Service) UpdateDataByPassword(password string, data model.Account) (model.Account, error) {
 	var allData = m.repo.GetAllData()
 	var i = 0
 
@@ -74,12 +90,15 @@ func (m *Service) UpdateDataByPassword(password string, data model.Account) mode
 		i++
 	}
 
-	m.repo.UpdateData(i, data)
-
-	return myService.repo.GetData(i)
+	if i == len(allData) {
+		m.repo.UpdateData(i, data)
+		return myService.repo.GetData(i), nil
+	} else {
+		return model.Account{}, errors.New("cannot update by username")
+	}
 }
 
-func (m *Service) DeleteDataByUsername(username string) model.Account {
+func (m *Service) DeleteDataByUsername(username string) (model.Account, error) {
 	var allData = m.repo.GetAllData()
 	var i = 0
 
@@ -90,13 +109,16 @@ func (m *Service) DeleteDataByUsername(username string) model.Account {
 		i++
 	}
 
-	getData := m.repo.GetData(i)
-	m.repo.DeleteData(i)
-
-	return getData
+	if i == len(allData) {
+		getData := m.repo.GetData(i)
+		m.repo.DeleteData(i)
+		return getData, nil
+	} else {
+		return model.Account{}, errors.New("error when delete data with username")
+	}
 }
 
-func (m *Service) DeleteDataByPassword(password string) model.Account {
+func (m *Service) DeleteDataByPassword(password string) (model.Account, error) {
 	var allData = m.repo.GetAllData()
 	var i = 0
 
@@ -107,8 +129,11 @@ func (m *Service) DeleteDataByPassword(password string) model.Account {
 		i++
 	}
 
-	getData := m.repo.GetData(i)
-	m.repo.DeleteData(i)
-
-	return getData
+	if i == len(allData) {
+		getData := m.repo.GetData(i)
+		m.repo.DeleteData(i)
+		return getData, nil
+	} else {
+		return model.Account{}, errors.New("error when delete data with username")
+	}
 }
